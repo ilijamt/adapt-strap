@@ -170,6 +170,13 @@ angular.module('adaptv.adaptStrapDocs').constant('adaptStrapModules', [
             'Look at more info for details on how to build ajaxConfig object'
         },
         {
+          name: 'template-no-data',
+          required: false,
+          default: 'NA',
+          type: 'String',
+          description: 'Provides a template for when we don\'t have data.'
+        },
+        {
           name: 'page-sizes',
           required: false,
           default: '[10, 25, 50]',

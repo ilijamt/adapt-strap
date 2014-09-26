@@ -41,7 +41,20 @@
                ng-bind="definition.columnHeaderDisplayName"></div>
         </th>
       </tr>
-      <tr data-ng-repeat="item in %=tableName%.items.list">
+      <tr ng-if="%=tableName%.items.list.length == 0">
+          <td colspan="{{%=columnDefinition%.length}}">
+              <div ng-if="%=tableName%.templateNoData.url">
+                  <ng-include src="%=tableName%.templateNoData.url"></ng-include>
+              </div>
+              <div ng-if="%=tableName%.templateNoData.template">
+                  <span ad-compile-template="%=tableName%.templateNoData.template"></span>
+              </div>
+              <div ng-if="!%=tableName%.templateNoData.url && !%=tableName%.templateNoData.template">
+                  {{ %=tableName%.templateNoData.message }}
+              </div>
+          </td>
+      </tr>
+      <tr ng-if="%=tableName%.items.list.length > 0" data-ng-repeat="item in %=tableName%.items.list">
         <td data-ng-repeat="definition in %=columnDefinition%"
             ng-style="{'width': definition.width}">
           <div ng-if="definition.templateUrl">

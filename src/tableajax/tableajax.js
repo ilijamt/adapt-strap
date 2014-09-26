@@ -24,10 +24,18 @@ angular.module('adaptv.adaptStrap.tableajax', ['adaptv.adaptStrap.utils', 'adapt
             loadingData: false,
             tableMaxHeight: attrs.tableMaxHeight
           },
+          templateNoData: {
+            url: undefined,
+            template: undefined,
+            message: 'No available data'
+          },
           ajaxConfig: scope.$eval(attrs.ajaxConfig),
           applyFilter: adStrapUtils.applyFilter,
           readProperty: adStrapUtils.getObjectProperty
         };
+
+        // extend the default data for templates
+        angular.extend(scope[attrs.tableName].templateNoData, scope.$eval(attrs.templateNoData));
 
         // ---------- Local data ---------- //
         var tableModels = scope[attrs.tableName],

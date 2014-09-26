@@ -31,6 +31,15 @@
         }
     </markdown>
     <markdown>
+        ### The noData Object is optional, and can be used to customize the message it displays when there is no data present.
+        ### This object is used the same way as ajaxConfig
+        {
+            url: 'String', // Not required if message is specified
+            template: 'String', // Not required if message or url is specified
+            message: 'String' // (Default: No available data) - Not required if url or template is specified.
+        }
+    </markdown>
+    <markdown>
         ### The column definition object is an array of definition objects
         ### The definition object should have properties shown in the example below:
         {
