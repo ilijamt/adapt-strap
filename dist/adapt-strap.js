@@ -622,15 +622,17 @@ angular.module('adaptv.adaptStrap.tableajax', [
 ]).directive('adTableAjax', [
   '$parse',
   '$adConfig',
+  '$rootScope',
   'adLoadPage',
   'adDebounce',
   'adStrapUtils',
-  function ($parse, $adConfig, adLoadPage, adDebounce, adStrapUtils) {
+  function ($parse, $adConfig, $rootScope, adLoadPage, adDebounce, adStrapUtils) {
 function controllerFunction($scope, $attrs) {
       // ---------- $scope initialization ---------- //
       $scope.attrs = $attrs;
       $scope.iconClasses = $adConfig.iconClasses;
       $scope.adStrapUtils = adStrapUtils;
+      $scope.onDataLoadCallback = $parse($attrs.adDataLoad) || null;
       $scope.items = {
         list: undefined,
         paging: {
@@ -677,8 +679,20 @@ function controllerFunction($scope, $attrs) {
               $scope.localConfig.pagingArray = response.pagingArray;
               $scope.localConfig.loadingData = false;
             }
+            if ($scope.onDataLoadCallback) {
+              $scope.onDataLoadCallback($scope, {
+                $success: true,
+                $response: response
+              });
+            }
           }, errorHandler = function () {
             $scope.localConfig.loadingData = false;
+            if ($scope.onDataLoadCallback) {
+              $scope.onDataLoadCallback($scope, {
+                $success: false,
+                $response: null
+              });
+            }
           };
         pageLoader(params).then(successHandler, errorHandler);
       });
