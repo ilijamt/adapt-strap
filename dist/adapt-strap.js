@@ -1220,7 +1220,7 @@ var deb = function (func, delay, immediate, ctx) {
             items: adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.itemsLocation),
             currentPage: options.pageNumber,
             totalPages: Math.ceil(adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.totalItems) / options.pageSize),
-            totalItems: adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.totalItems),
+            totalItems: Math.ceil(adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.totalItems)),
             pagingArray: [],
             token: options.token
           };
