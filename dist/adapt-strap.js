@@ -1,6 +1,6 @@
 /**
  * adapt-strap
- * @version v2.0.6 - 2014-10-26
+ * @version v2.0.6 - 2014-11-24
  * @link https://github.com/Adaptv/adapt-strap
  * @author Kashyap Patel (kashyap@adap.tv)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -636,6 +636,7 @@ function controllerFunction($scope, $attrs) {
         paging: {
           currentPage: 1,
           totalPages: undefined,
+          totalItems: undefined,
           pageSize: Number($attrs.pageSize) || 10,
           pageSizes: $parse($attrs.pageSizes)() || [
             10,
@@ -671,6 +672,7 @@ function controllerFunction($scope, $attrs) {
             if (response.token === lastRequestToken) {
               $scope.items.list = response.items;
               $scope.items.paging.totalPages = response.totalPages;
+              $scope.items.paging.totalItems = response.totalItems;
               $scope.items.paging.currentPage = response.currentPage;
               $scope.localConfig.pagingArray = response.pagingArray;
               $scope.localConfig.loadingData = false;
@@ -1204,6 +1206,7 @@ var deb = function (func, delay, immediate, ctx) {
             items: adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.itemsLocation),
             currentPage: options.pageNumber,
             totalPages: Math.ceil(adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.totalItems) / options.pageSize),
+            totalItems: adStrapUtils.evalObjectProperty(result.data, pagingConfig.response.totalItems),
             pagingArray: [],
             token: options.token
           };
@@ -1237,7 +1240,9 @@ var deb = function (func, delay, immediate, ctx) {
           token: options.token
         };
       var start = (options.pageNumber - 1) * options.pageSize, end = start + options.pageSize, i, itemsObject = options.localData, localItems;
-      localItems = $filter('orderBy')(itemsObject, options.sortKey, options.sortDirection);
+      if (options.sortKey) {
+        localItems = $filter('orderBy')(itemsObject, options.sortKey, options.sortDirection);
+      }
       response.items = localItems.slice(start, end);
       response.allItems = itemsObject;
       response.currentPage = options.pageNumber;
